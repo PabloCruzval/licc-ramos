@@ -5,6 +5,8 @@ import Image from "next/image";
 
 import Footer from "./components/Footer";
 import Ramo from "./components/Ramo";
+import { transform } from "next/dist/build/swc";
+import Card from "@mui/material/Card";
 
 export interface RamoInterface {
   sigla: string;
@@ -46,10 +48,16 @@ export default function Home() {
             />
           ) : (
             RAMOS.map((ramo) => (
-              <div
+              <Card
                 key={ramo.sigla}
-                className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mb-4"
+                className="rounded-lg p-4 mb-4"
                 onClick={() => setRamoSeleccionado(ramo)}
+                sx={{
+                  "&:hover": {
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  },
+                }}
               >
                 <h2 className="text-2xl font-semibold mb-2">
                   {ramo.nombre} - {ramo.sigla}
@@ -57,7 +65,7 @@ export default function Home() {
                 <p className="text-gray-600 dark:text-gray-400">
                   Clases disponibles: {ramo.clases}
                 </p>
-              </div>
+              </Card>
             ))
           )}
         </div>
