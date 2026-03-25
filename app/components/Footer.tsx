@@ -1,9 +1,9 @@
 export default function Footer() {
   return (
-    <footer className="text-black font-bold py-4 items-center justify-center w-full">
+    <footer className="text-black dark:text-white font-bold py-4 items-center justify-center w-full">
       <div className="container mx-auto text-center">
         <p>
-          Hecho con ♥️{" "}
+          Hecho con ♥️ por{" "}
           <a
             href="https://github.com/Victorsitou"
             target="_blank"

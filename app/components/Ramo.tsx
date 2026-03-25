@@ -1,26 +1,10 @@
 import { RamoInterface } from "../page";
 import ramos from "../ramos.json";
 
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Chip,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Chip } from "@mui/material";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-
-function agrupar<T>(arr: T[], cada: number) {
-  const grupos = [];
-  for (let i = 0; i < arr.length; i += cada) {
-    grupos.push(arr.slice(i, i + cada));
-  }
-  return grupos;
-}
 
 export default function Ramo({
   sigla,
@@ -31,90 +15,70 @@ export default function Ramo({
   const ramoData = (ramos as Record<string, any[]>)[sigla] || [];
 
   return (
-    <Box className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 mb-4 shadow-sm">
-      <Stack direction="row" alignItems="center" spacing={2} mb={4}>
-        <ArrowBackIcon
-          onClick={onBack}
-          sx={{ cursor: "pointer", fontSize: 28 }}
-        />
-        <Typography variant="h5" fontWeight={700}>
-          {nombre} - {sigla}
-        </Typography>
-      </Stack>
-
-      <Stack spacing={2}>
-        {agrupar(ramoData, 2).map((grupo, index) => (
-          <Stack
-            key={index}
-            direction={{ xs: "column", md: "row" }}
-            spacing={2}
+    <section className="w-full">
+      <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
+        <div className="mb-6 flex flex-col gap-4 sm:mb-8">
+          <button
+            onClick={onBack}
+            className="inline-flex w-fit items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700 transition hover:-translate-y-0.5 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
           >
-            {grupo.map((item) => (
-              <Card
-                key={item.clase}
-                sx={{
-                  flex: 1,
-                  borderRadius: 3,
-                  boxShadow: 2,
-                  transition: "0.2s ease",
-                  "&:hover": {
-                    transform: "translateY(-2px)",
-                    boxShadow: 5,
-                  },
-                }}
-              >
-                <CardActionArea
-                  component="a"
-                  href={`${url}Clase${item.clase}.pdf`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ height: "100%" }}
-                >
-                  <CardContent>
-                    <Stack
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="flex-start"
-                      mb={1.5}
-                    >
-                      <Typography variant="h6" fontWeight={700}>
-                        Clase {item.clase}
-                      </Typography>
+            <ArrowBackIcon sx={{ fontSize: 18 }} />
+            Volver
+          </button>
 
-                      {item.texto_guia && (
-                        <Chip
-                          icon={<MenuBookIcon />}
-                          label={item.texto_guia}
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                        />
-                      )}
-                    </Stack>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+              Repositorio del ramo
+            </p>
+            <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+              {nombre} - {sigla}
+            </h2>
+          </div>
+        </div>
 
-                    <Typography
-                      variant="subtitle1"
-                      fontWeight={600}
-                      gutterBottom
-                      sx={{ opacity: 0.9 }}
-                    >
-                      {item.contenido}
-                    </Typography>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {ramoData.map((item) => (
+            <a
+              key={item.clase}
+              href={`${url}Clase${item.clase}.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-3xl border border-zinc-200 bg-zinc-50 p-5 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-400 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-950/40"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-xl font-bold leading-tight">
+                    Clase {item.clase}
+                  </h3>
+                </div>
+              </div>
 
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ lineHeight: 1.6 }}
-                    >
-                      <strong>Objetivo:</strong> {item.objetivo}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            ))}
-          </Stack>
-        ))}
-      </Stack>
-    </Box>
+              {item.texto_guia && (
+                <div className="mt-3">
+                  <Chip
+                    icon={<MenuBookIcon />}
+                    label={item.texto_guia}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                  />
+                </div>
+              )}
+
+              <p className="mt-4 text-base font-semibold text-zinc-800 dark:text-zinc-100">
+                {item.contenido}
+              </p>
+
+              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                  Objetivo:
+                </span>{" "}
+                {item.objetivo}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
