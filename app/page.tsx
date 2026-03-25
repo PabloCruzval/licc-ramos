@@ -84,12 +84,11 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Busca tus diapositivas más rápido
+              Busca tus diapositivas
             </h1>
 
             <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400 sm:text-base">
-              Accede a las clases por ramo con una interfaz más clara, rápida y
-              cómoda.
+              Accede a las diapositivas de los ramos MAT más rápido :)
             </p>
           </div>
 
