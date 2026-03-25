@@ -11,6 +11,15 @@ export default function Footer() {
             className="text-blue-500 hover:underline"
           >
             Victor
+          </a>{" "}
+          -{" "}
+          <a
+            href="https://github.com/Victorsitou/licc-ramos"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            Código en GitHub
           </a>
         </p>
       </div>
