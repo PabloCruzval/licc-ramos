@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 
 import Footer from "./components/Footer";
 import Ramo from "./components/Ramo";
+import ClasesHoy from "./components/ClasesHoy";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -12,23 +13,22 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 import ramosJson from "./ramos.json";
-const ramos = ramosJson as unknown as RamoInterface[];
+const ramos: RamoInterface[] = ramosJson;
+
+export interface InfoClase {
+  clase: number;
+  fecha: string;
+  objetivo: string;
+  contenido: string;
+  texto_guia?: string;
+}
 
 export interface RamoInterface {
   sigla: string;
   nombre: string;
   clases: number;
   url: string;
-  info_clases: {
-    clase: number;
-    objetivo: string;
-    contenido: string;
-    texto_guia?: string;
-  }[];
-}
-
-export interface RamosData {
-  [sigla: string]: RamoInterface;
+  info_clases: InfoClase[];
 }
 
 function ThemeToggle() {
@@ -96,41 +96,44 @@ export default function Home() {
         <div className="w-full">
           {ramoSeleccionado ? (
             <Ramo
-              {...ramoSeleccionado}
+              ramo={ramoSeleccionado}
               onBack={() => setRamoSeleccionado(null)}
             />
           ) : (
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               {ramos.map((ramo) => (
-                <button
-                  key={ramo.sigla}
-                  onClick={() => setRamoSeleccionado(ramo)}
-                  className="group rounded-3xl border border-zinc-200 bg-white p-6 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-400 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h2 className="text-xl font-bold leading-tight sm:text-2xl">
-                        {ramo.nombre}
-                      </h2>
-                      <p className="mt-1 text-sm font-semibold tracking-wide text-blue-600 dark:text-blue-400">
-                        {ramo.sigla}
-                      </p>
+                <div key={ramo.sigla} className="flex flex-col gap-5">
+                  <ClasesHoy key={ramo.sigla} ramo={ramo} />
+                  <button
+                    key={ramo.sigla}
+                    onClick={() => setRamoSeleccionado(ramo)}
+                    className="group rounded-3xl border border-zinc-200 bg-white p-6 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-400 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-bold leading-tight sm:text-2xl">
+                          {ramo.nombre}
+                        </h2>
+                        <p className="mt-1 text-sm font-semibold tracking-wide text-blue-600 dark:text-blue-400">
+                          {ramo.sigla}
+                        </p>
+                      </div>
+
+                      <div className="rounded-2xl bg-zinc-100 p-2 text-zinc-500 transition group-hover:scale-105 dark:bg-zinc-800 dark:text-zinc-300">
+                        <MenuBookIcon fontSize="small" />
+                      </div>
                     </div>
 
-                    <div className="rounded-2xl bg-zinc-100 p-2 text-zinc-500 transition group-hover:scale-105 dark:bg-zinc-800 dark:text-zinc-300">
-                      <MenuBookIcon fontSize="small" />
+                    <p className="mt-4 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                      Entra al repositorio del curso y abre las clases
+                      disponibles de forma ordenada.
+                    </p>
+
+                    <div className="mt-5 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                      {ramo.clases} clases
                     </div>
-                  </div>
-
-                  <p className="mt-4 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                    Entra al repositorio del curso y abre las clases disponibles
-                    de forma ordenada.
-                  </p>
-
-                  <div className="mt-5 inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                    {ramo.clases} clases
-                  </div>
-                </button>
+                  </button>
+                </div>
               ))}
             </div>
           )}

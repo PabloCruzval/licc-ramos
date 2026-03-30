@@ -1,19 +1,19 @@
 import { RamoInterface } from "../page";
-import ramos from "../ramos.json";
 
 import { Chip } from "@mui/material";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
-export default function Ramo({
-  sigla,
-  nombre,
-  url,
-  onBack,
-}: RamoInterface & { onBack: () => void }) {
-  const ramoData = (ramos as Record<string, any[]>)[sigla] || [];
+import { formatDate, isToday } from "../utils";
 
+export default function Ramo({
+  ramo,
+  onBack,
+}: {
+  ramo: RamoInterface;
+  onBack: () => void;
+}) {
   return (
     <section className="w-full">
       <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
@@ -31,24 +31,25 @@ export default function Ramo({
               Repositorio del ramo
             </p>
             <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-              {nombre} - {sigla}
+              {ramo.nombre} - {ramo.sigla}
             </h2>
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {ramoData.map((item) => (
+          {ramo.info_clases.map((item) => (
             <a
               key={item.clase}
-              href={`${url}Clase${item.clase}.pdf`}
+              href={`${ramo.url}Clase${item.clase}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-3xl border border-zinc-200 bg-zinc-50 p-5 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-400 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-950/40"
+              className={`group rounded-3xl border border-zinc-200  p-5 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-400 hover:shadow-xl dark:border-zinc-800  ${isToday(item.fecha) ? "ring-2 ring-blue-400 bg-blue-100 dark:bg-blue-900/30" : "bg-zinc-50 dark:bg-zinc-950/40"}`}
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-bold leading-tight">
-                    Clase {item.clase}
+                    Clase {item.clase} -{" "}
+                    {isToday(item.fecha) ? "Hoy" : formatDate(item.fecha)}
                   </h3>
                 </div>
               </div>
