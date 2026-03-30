@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "date": "2026-03-30",
+    "features": [
+      {
+        "emoji": "📅",
+        "title": "Clases de hoy",
+        "description": "Aparece la clase del día encima de cada ramo automáticamente."
+      },
+      {
+        "emoji": "🗓️",
+        "title": "Fechas en cada clase",
+        "description": "Cada clase ahora muestra el día que le corresponde."
+      }
+    ]
+  }
+]

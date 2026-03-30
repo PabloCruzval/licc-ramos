@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import Footer from "./components/Footer";
 import Ramo from "./components/Ramo";
 import ClasesHoy from "./components/ClasesHoy";
+import FeatureModal from "./components/FeatureModal";
 
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -14,6 +15,8 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 import ramosJson from "./ramos.json";
 const ramos: RamoInterface[] = ramosJson;
+
+import Notifications, { FeatureData } from "./notifications";
 
 export interface InfoClase {
   clase: number;
@@ -68,10 +71,34 @@ function ThemeToggle() {
 export default function Home() {
   const [ramoSeleccionado, setRamoSeleccionado] =
     useState<RamoInterface | null>(null);
+  const [showModalNotification, setShowModalNotification] = useState(false);
+  const [modalContent, setModalContent] = useState<FeatureData | null>(null);
+  const notifications = new Notifications();
+
+  useEffect(() => {
+    async function checkNotifications() {
+      const { unseen, latest, content } =
+        await notifications.unseenNotification();
+      if (unseen && latest) {
+        setShowModalNotification(true);
+        notifications.setLatestNotification(latest);
+        setModalContent(content);
+      }
+    }
+
+    checkNotifications();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-100 via-zinc-50 to-white text-zinc-900 transition-colors dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 dark:text-zinc-100">
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-10 sm:px-10">
+        {showModalNotification && (
+          <FeatureModal
+            open={showModalNotification}
+            close={() => setShowModalNotification(false)}
+            data={modalContent}
+          />
+        )}
         <div className="mb-6 flex items-start justify-between gap-4">
           <div className="max-w-3xl">
             <div className="mb-2 flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -102,10 +129,10 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               {ramos.map((ramo) => (
-                <div key={ramo.sigla} className="flex flex-col gap-5">
-                  <ClasesHoy key={ramo.sigla} ramo={ramo} />
+                <div key={ramo.sigla + "1"} className="flex flex-col gap-5">
+                  <ClasesHoy key={ramo.sigla + "2"} ramo={ramo} />
                   <button
-                    key={ramo.sigla}
+                    key={ramo.sigla + "3"}
                     onClick={() => setRamoSeleccionado(ramo)}
                     className="group rounded-3xl border border-zinc-200 bg-white p-6 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-400 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
                   >
