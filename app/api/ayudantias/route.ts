@@ -28,6 +28,8 @@ export async function GET() {
       .filter((f: any) => f.type === "file")
       .map((f: any) => ({ name: f.name, url: f.download_url }))
       .sort((a: { name: string }, b: { name: string }) => {
+        a.name = a.name.replace("í", "i");
+        b.name = b.name.replace("í", "i");
         const aNumber = parseInt(a.name.split("Ayudantia_")[1]);
         const bNumber = parseInt(b.name.split("Ayudantia_")[1]);
         return aNumber - bNumber;
