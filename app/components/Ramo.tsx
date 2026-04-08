@@ -31,6 +31,9 @@ export default function Ramo({
   const [loading, setLoading] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const nextInterrogacion = ramo.info_interrogaciones.find(
+    (i) => new Date(i.fecha) >= new Date(),
+  );
 
   // Ayudantía
   const [showAyudantia, setShowAyudantia] = useState(false);
@@ -192,6 +195,25 @@ export default function Ramo({
                 Clase {item.clase} -{" "}
                 {isToday(item.fecha) ? "Hoy" : formatDate(item.fecha)}
               </h3>
+
+              {item.interrogacion && (
+                <Chip
+                  className="mt-2 font-bold"
+                  label={`Interrogación ${item.interrogacion} (i${item.interrogacion})`}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    borderColor:
+                      nextInterrogacion?.interrogacion === item.interrogacion
+                        ? "red"
+                        : "green",
+                    color:
+                      nextInterrogacion?.interrogacion === item.interrogacion
+                        ? "red"
+                        : "green",
+                  }}
+                />
+              )}
 
               {item.texto_guia && (
                 <div className="mt-3">

@@ -24,6 +24,12 @@ export interface InfoClase {
   objetivo: string;
   contenido: string;
   texto_guia?: string;
+  interrogacion?: number;
+}
+
+export interface InfoInterrogacion {
+  interrogacion: number;
+  fecha: string;
 }
 
 export interface RamoInterface {
@@ -32,6 +38,7 @@ export interface RamoInterface {
   clases: number;
   url: string;
   info_clases: InfoClase[];
+  info_interrogaciones: InfoInterrogacion[];
 }
 
 function ThemeToggle() {
