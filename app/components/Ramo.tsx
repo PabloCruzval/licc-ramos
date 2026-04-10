@@ -31,9 +31,11 @@ export default function Ramo({
   const [loading, setLoading] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const nextInterrogacion = ramo.info_interrogaciones.find(
-    (i) => new Date(i.fecha) >= new Date(),
-  );
+  const nextInterrogacion = ramo.info_interrogaciones.find((i) => {
+    const fecha = new Date(i.fecha);
+    fecha.setDate(fecha.getDate() + 1);
+    return fecha >= new Date();
+  });
 
   // Ayudantía
   const [showAyudantia, setShowAyudantia] = useState(false);
